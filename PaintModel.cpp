@@ -10,7 +10,10 @@ PaintModel::PaintModel()
 // Draws any shapes in the model to the provided DC (draw context)
 void PaintModel::DrawShapes(wxDC& dc, bool showSelection)
 {
-	// TODO
+    for(auto& iter : mShapes)
+    {
+        iter->Draw(dc);
+    }
 }
 
 // Clear the current paint model and start fresh
@@ -33,4 +36,30 @@ void PaintModel::RemoveShape(std::shared_ptr<Shape> shape)
 	{
 		mShapes.erase(iter);
 	}
+}
+
+// Returns true if there's currently an active command
+bool PaintModel::HasActiveCommand()
+{
+    if(mActiveCommand != nullptr)
+    {
+        return true;
+    }
+    return false;
+}
+
+void PaintModel::CreateCommand(CommandType commandType, const wxPoint& start)
+{
+    CommandFactory::Create(shared_from_this(), commandType, start);
+}
+
+void PaintModel::UpdateCommand(wxPoint point)
+{
+    mActiveCommand->Update(point);
+}
+
+void PaintModel::FinalizeCommand(std::shared_ptr<PaintModel> model)
+{
+    mActiveCommand->Finalize(model);
+    mActiveCommand = nullptr;
 }
