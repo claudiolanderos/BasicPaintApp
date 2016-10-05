@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		923147CE1BAE3CB5001699FD /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 923147BF1BAE3CB5001699FD /* Command.cpp */; settings = {ASSET_TAGS = (); }; };
-		923147CF1BAE3CB5001699FD /* Cursors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 923147C11BAE3CB5001699FD /* Cursors.cpp */; settings = {ASSET_TAGS = (); }; };
-		923147D01BAE3CB5001699FD /* PaintApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 923147C41BAE3CB5001699FD /* PaintApp.cpp */; settings = {ASSET_TAGS = (); }; };
-		923147D11BAE3CB5001699FD /* PaintDrawPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 923147C61BAE3CB5001699FD /* PaintDrawPanel.cpp */; settings = {ASSET_TAGS = (); }; };
-		923147D21BAE3CB5001699FD /* PaintFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 923147C81BAE3CB5001699FD /* PaintFrame.cpp */; settings = {ASSET_TAGS = (); }; };
-		923147D31BAE3CB5001699FD /* PaintModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 923147CA1BAE3CB5001699FD /* PaintModel.cpp */; settings = {ASSET_TAGS = (); }; };
-		923147D41BAE3CB5001699FD /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 923147CC1BAE3CB5001699FD /* Shape.cpp */; settings = {ASSET_TAGS = (); }; };
+		923147CE1BAE3CB5001699FD /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 923147BF1BAE3CB5001699FD /* Command.cpp */; };
+		923147CF1BAE3CB5001699FD /* Cursors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 923147C11BAE3CB5001699FD /* Cursors.cpp */; };
+		923147D01BAE3CB5001699FD /* PaintApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 923147C41BAE3CB5001699FD /* PaintApp.cpp */; };
+		923147D11BAE3CB5001699FD /* PaintDrawPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 923147C61BAE3CB5001699FD /* PaintDrawPanel.cpp */; };
+		923147D21BAE3CB5001699FD /* PaintFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 923147C81BAE3CB5001699FD /* PaintFrame.cpp */; };
+		923147D31BAE3CB5001699FD /* PaintModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 923147CA1BAE3CB5001699FD /* PaintModel.cpp */; };
+		923147D41BAE3CB5001699FD /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 923147CC1BAE3CB5001699FD /* Shape.cpp */; };
 		92F34CA11A5200F300A998AC /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92F34CA01A5200F300A998AC /* CoreFoundation.framework */; };
 /* End PBXBuildFile section */
 

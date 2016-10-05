@@ -51,3 +51,17 @@ void Shape::GetBounds(wxPoint& topLeft, wxPoint& botRight) const
 	topLeft = mTopLeft;
 	botRight = mBotRight;
 }
+
+RectShape::RectShape(const wxPoint& start)
+: Shape(start)
+{
+    
+}
+
+void RectShape::Draw(wxDC &dc) const
+{
+    wxRect rect;
+    rect.SetLeftTop(mTopLeft);
+    rect.SetRightBottom(mBotRight);
+    dc.DrawRectangle(rect);
+}

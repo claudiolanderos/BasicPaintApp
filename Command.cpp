@@ -25,3 +25,14 @@ std::shared_ptr<Command> CommandFactory::Create(std::shared_ptr<PaintModel> mode
 
 	return retVal;
 }
+
+void DrawCommand::Update(const wxPoint &newPoint)
+{
+    Command::Update(newPoint);
+    mShape->Update(newPoint);
+}
+
+void DrawCommand::Finalize(std::shared_ptr<PaintModel> model)
+{
+    mShape->Finalize();
+}

@@ -28,3 +28,12 @@ protected:
 	// Bottom right point of shape
 	wxPoint mBotRight;
 };
+
+class RectShape : public Shape
+{
+public:
+    RectShape(const wxPoint& start);
+    
+    //Draw the shape
+    void Draw(wxDC& dc) const override;
+};

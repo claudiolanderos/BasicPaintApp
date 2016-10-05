@@ -47,3 +47,15 @@ struct CommandFactory
 	static std::shared_ptr<Command> Create(std::shared_ptr<PaintModel> model,
 		CommandType type, const wxPoint& start);
 };
+
+class DrawCommand : public Command
+{
+public:
+    void Finalize(std::shared_ptr<PaintModel> model) override;
+    
+    void Undo(std::shared_ptr<PaintModel> model) override;
+    
+    void Redo(std::shared_ptr<PaintModel> model) override;
+    
+    void Update(const wxPoint& newPoint) override;
+};
