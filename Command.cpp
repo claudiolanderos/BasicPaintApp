@@ -27,23 +27,15 @@ std::shared_ptr<Command> CommandFactory::Create(std::shared_ptr<PaintModel> mode
     {
         case CM_DrawLine:
             shape = std::make_shared<LineShape>(start);
-            retVal = std::make_shared<DrawCommand>(start, shape);
-            model->AddShape(shape);
             break;
         case CM_DrawEllipse:
             shape = std::make_shared<EllipseShape>(start);
-            retVal = std::make_shared<DrawCommand>(start, shape);
-            model->AddShape(shape);
             break;
         case CM_DrawRect:
             shape = std::make_shared<RectShape>(start);
-            retVal = std::make_shared<DrawCommand>(start, shape);
-            model->AddShape(shape);
             break;
         case CM_DrawPencil:
             shape = std::make_shared<PencilShape>(start);
-            retVal = std::make_shared<DrawCommand>(start, shape);
-            model->AddShape(shape);
             break;
         case CM_Move:
             break;
@@ -54,6 +46,10 @@ std::shared_ptr<Command> CommandFactory::Create(std::shared_ptr<PaintModel> mode
         case CM_SetBrush:
             break;
     }
+    retVal = std::make_shared<DrawCommand>(start, shape);
+    shape->SetPen(model->GetPen());
+    shape->SetBrush(model->GetBrush());
+    model->AddShape(shape);
 	return retVal;
 }
 

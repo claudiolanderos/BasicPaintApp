@@ -60,6 +60,8 @@ RectShape::RectShape(const wxPoint& start)
 
 void RectShape::Draw(wxDC &dc) const
 {
+    dc.SetPen(mPen);
+    dc.SetBrush(mBrush);
     dc.DrawRectangle(wxRect(mTopLeft, mBotRight));
 }
 
@@ -71,6 +73,8 @@ EllipseShape::EllipseShape(const wxPoint& start)
 
 void EllipseShape::Draw(wxDC &dc) const
 {
+    dc.SetPen(mPen);
+    dc.SetBrush(mBrush);
     dc.DrawEllipse(wxRect(mTopLeft, mBotRight));
 }
 
@@ -82,6 +86,8 @@ LineShape::LineShape(const wxPoint& start)
 
 void LineShape::Draw(wxDC &dc) const
 {
+    dc.SetPen(mPen);
+    dc.SetBrush(mBrush);
     dc.DrawLine(mStartPoint, mEndPoint);
 }
 
@@ -123,6 +129,8 @@ void PencilShape::Finalize()
 
 void PencilShape::Draw(wxDC &dc) const
 {
+    dc.SetPen(mPen);
+    dc.SetBrush(mBrush);
     if(mPoints.size() == 1)
     {
         dc.DrawPoint(mPoints[0]);

@@ -4,7 +4,8 @@
 
 PaintModel::PaintModel()
 {
-	
+    mPen = *wxBLACK_PEN;
+    mBrush = *wxWHITE_BRUSH;
 }
 
 // Draws any shapes in the model to the provided DC (draw context)
@@ -29,6 +30,8 @@ void PaintModel::New()
         mUndo.pop();
     }
     mShapes.clear();
+    mPen = *wxBLACK_PEN;
+    mBrush = *wxWHITE_BRUSH;
 }
 
 // Add a shape to the paint model

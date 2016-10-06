@@ -38,6 +38,22 @@ public:
     // Redo command
     void Redo();
     
+    void SetPenWidth(int width) { mPen.SetWidth(width); }
+    
+    int GetPenWidth() { return mPen.GetWidth(); }
+    
+    void SetPenColor(wxColour color) { mPen.SetColour(color); }
+    
+    wxColour GetPenColor() { return mPen.GetColour(); }
+    
+    void SetBrushColor(wxColour color) { mBrush.SetColour(color); }
+    
+    wxColour GetBrushColor() { return mBrush.GetColour(); }
+    
+    wxPen GetPen() { return mPen; }
+    
+    wxBrush GetBrush() { return mBrush; }
+    
 private:
 	// Vector of all the shapes in the model
 	std::vector<std::shared_ptr<Shape>> mShapes;
@@ -47,4 +63,8 @@ private:
     std::stack<std::shared_ptr<Command>> mUndo;
     // Redo stack
     std::stack<std::shared_ptr<Command>> mRedo;
+    // Pen
+    wxPen mPen;
+    // Brush
+    wxBrush mBrush;
 };

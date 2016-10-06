@@ -10,6 +10,7 @@
 #include <wx/colordlg.h>
 #include <wx/textdlg.h>
 #include <wx/filedlg.h>
+#include <wx/valnum.h>
 #include "PaintDrawPanel.h"
 #include "PaintModel.h"
 
@@ -236,17 +237,45 @@ void PaintFrame::OnDelete(wxCommandEvent& event)
 
 void PaintFrame::OnSetPenColor(wxCommandEvent& event)
 {
-	// TODO
+    wxColourData data;
+    data.SetColour(mModel->GetPenColor());
+    wxColourDialog dialog(this, &data);
+    if (dialog.ShowModal() == wxID_OK)
+    {
+        // Use dialog.GetColourData() to get the color picked
+        mModel->SetPenColor(dialog.GetColourData().GetColour());
+    }
 }
 
 void PaintFrame::OnSetPenWidth(wxCommandEvent& event)
 {
-	// TODO
+    wxString caption;
+    wxTextEntryDialog dialog(this, wxString("Please enter an integer between 1 and 10"), caption, "1", wxTextEntryDialogStyle, wxDefaultPosition);
+    
+    wxIntegerValidator<int> validator;
+    validator.SetRange(1, 10);
+    dialog.SetValidator(validator);
+    
+    if(dialog.ShowModal() == wxID_OK)
+    {
+        int value = atoi(dialog.GetValue().c_str());
+        if(value > 0 && value < 11)
+           {
+               mModel->SetPenWidth(value);
+           }
+    }
 }
 
 void PaintFrame::OnSetBrushColor(wxCommandEvent& event)
 {
-	// TODO
+    wxColourData data;
+    data.SetColour(mModel->GetBrushColor());
+    wxColourDialog dialog(this, &data);
+    if (dialog.ShowModal() == wxID_OK)
+    {
+        // Use dialog.GetColourData() to get the color picked
+        mModel->SetBrushColor(dialog.GetColourData().GetColour());
+    }
 }
 
 void PaintFrame::OnMouseButton(wxMouseEvent& event)
@@ -269,6 +298,10 @@ void PaintFrame::OnMouseButton(wxMouseEvent& event)
             case ID_DrawPencil:
                 mModel->CreateCommand(CM_DrawPencil, event.GetPosition());
                 mPanel->PaintNow();
+                break;
+            case ID_SetPenColor:
+                break;
+            case ID_SetBrushColor:
                 break;
             default:
                 break;

@@ -17,7 +17,13 @@ public:
 	void GetBounds(wxPoint& topLeft, wxPoint& botRight) const;
 	// Draw the shape
 	virtual void Draw(wxDC& dc) const = 0;
-	virtual ~Shape() { }	
+	virtual ~Shape() { }
+    
+    void SetPen(wxPen pen) { mPen = pen; }
+    wxPen GetPen() { return mPen; }
+    
+    void SetBrush(wxBrush brush) { mBrush = brush; }
+    wxBrush GetBrush() { return mBrush; }
 protected:
 	// Starting point of shape
 	wxPoint mStartPoint;
@@ -27,6 +33,10 @@ protected:
 	wxPoint mTopLeft;
 	// Bottom right point of shape
 	wxPoint mBotRight;
+    // Pen
+    wxPen mPen;
+    // Brush
+    wxBrush mBrush;
 };
 
 class RectShape : public Shape
