@@ -235,12 +235,15 @@ void PaintFrame::OnMouseButton(wxMouseEvent& event)
             case ID_DrawEllipse:
                 mModel->CreateCommand(CM_DrawEllipse, event.GetPosition());
                 mPanel->PaintNow();
+                break;
             case ID_DrawLine:
                 mModel->CreateCommand(CM_DrawLine, event.GetPosition());
                 mPanel->PaintNow();
+                break;
             case ID_DrawPencil:
                 mModel->CreateCommand(CM_DrawPencil, event.GetPosition());
                 mPanel->PaintNow();
+                break;
             default:
                 break;
         }
