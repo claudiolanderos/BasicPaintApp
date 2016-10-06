@@ -71,12 +71,12 @@ void DrawCommand::Update(const wxPoint &newPoint)
 
 void DrawCommand::Undo(std::shared_ptr<PaintModel> model)
 {
-    
+    model->RemoveShape(mShape);
 }
 
 void DrawCommand::Redo(std::shared_ptr<PaintModel> model)
 {
-    
+    model->AddShape(mShape);
 }
 
 void DrawCommand::Finalize(std::shared_ptr<PaintModel> model)
