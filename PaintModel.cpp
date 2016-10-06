@@ -50,7 +50,7 @@ bool PaintModel::HasActiveCommand()
 
 void PaintModel::CreateCommand(CommandType commandType, const wxPoint& start)
 {
-    CommandFactory::Create(shared_from_this(), commandType, start);
+    mActiveCommand = CommandFactory::Create(shared_from_this(), commandType, start);
 }
 
 void PaintModel::UpdateCommand(wxPoint point)
@@ -58,8 +58,8 @@ void PaintModel::UpdateCommand(wxPoint point)
     mActiveCommand->Update(point);
 }
 
-void PaintModel::FinalizeCommand(std::shared_ptr<PaintModel> model)
+void PaintModel::FinalizeCommand()
 {
-    mActiveCommand->Finalize(model);
+    mActiveCommand->Finalize(shared_from_this());
     mActiveCommand = nullptr;
 }

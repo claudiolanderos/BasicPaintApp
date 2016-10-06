@@ -37,3 +37,35 @@ public:
     //Draw the shape
     void Draw(wxDC& dc) const override;
 };
+
+class EllipseShape : public Shape
+{
+public:
+    EllipseShape(const wxPoint& start);
+    
+    //Draw the shape
+    void Draw(wxDC& dc) const override;
+};
+
+class LineShape : public Shape
+{
+public:
+    LineShape(const wxPoint& start);
+    
+    //Draw the line
+    void Draw(wxDC& dc) const override;
+};
+
+class PencilShape : public Shape
+{
+public:
+    PencilShape(const wxPoint& point);
+    
+    void Update(const wxPoint& newPoint) override;
+    
+    void Finalize() override;
+    
+    void Draw(wxDC& dc) const override;
+private:
+    std::vector<wxPoint> mPoints;
+};

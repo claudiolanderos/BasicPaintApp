@@ -60,8 +60,79 @@ RectShape::RectShape(const wxPoint& start)
 
 void RectShape::Draw(wxDC &dc) const
 {
-    wxRect rect;
-    rect.SetLeftTop(mTopLeft);
-    rect.SetRightBottom(mBotRight);
-    dc.DrawRectangle(rect);
+    dc.DrawRectangle(wxRect(mTopLeft, mBotRight));
 }
+
+EllipseShape::EllipseShape(const wxPoint& start)
+: Shape(start)
+{
+
+}
+
+void EllipseShape::Draw(wxDC &dc) const
+{
+    dc.DrawEllipse(wxRect(mTopLeft, mBotRight));
+}
+
+LineShape::LineShape(const wxPoint& start)
+: Shape(start)
+{
+    
+}
+
+void LineShape::Draw(wxDC &dc) const
+{
+    dc.DrawLine(mStartPoint, mEndPoint);
+}
+
+PencilShape::PencilShape(const wxPoint& point)
+:Shape(point)
+{
+    mPoints.push_back(point);
+}
+
+void PencilShape::Update(const wxPoint &newPoint)
+{
+    Shape::Update(newPoint);
+    mPoints.push_back(newPoint);
+}
+
+void PencilShape::Finalize()
+{
+    wxPoint topLeft, botRight;
+    for(auto& iter : mPoints)
+    {
+        if(iter.x < topLeft.x)
+        {
+            topLeft.x = iter.x;
+        }
+        if(iter.y > topLeft.y)
+        {
+            topLeft.y = iter.y;
+        }
+        if(iter.x > botRight.x)
+        {
+            botRight.x = iter.x;
+        }
+        if(iter.y < botRight.y)
+        {
+            botRight.y = iter.y;
+        }
+    }
+}
+
+void PencilShape::Draw(wxDC &dc) const
+{
+    if(mPoints.size() == 1)
+    {
+        dc.DrawPoint(mPoints[0]);
+    }
+    else {
+        dc.DrawLines(static_cast<int>(mPoints.size()), mPoints.data());
+    }
+}
+
+
+
+
+

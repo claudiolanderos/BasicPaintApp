@@ -51,6 +51,8 @@ struct CommandFactory
 class DrawCommand : public Command
 {
 public:
+    DrawCommand(const wxPoint& start, std::shared_ptr<Shape> shape);
+    
     void Finalize(std::shared_ptr<PaintModel> model) override;
     
     void Undo(std::shared_ptr<PaintModel> model) override;

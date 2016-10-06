@@ -27,7 +27,7 @@ public:
     
     void UpdateCommand(wxPoint point);
     
-    void FinalizeCommand(std::shared_ptr<PaintModel> model);
+    void FinalizeCommand();
 private:
 	// Vector of all the shapes in the model
 	std::vector<std::shared_ptr<Shape>> mShapes;
