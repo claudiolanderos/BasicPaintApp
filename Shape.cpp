@@ -52,6 +52,19 @@ void Shape::GetBounds(wxPoint& topLeft, wxPoint& botRight) const
 	botRight = mBotRight;
 }
 
+void Shape::DrawSelection(wxDC &dc)
+{
+    wxPoint topLeft = mTopLeft;
+    wxPoint botRight = mBotRight;
+    topLeft.x -= 2;
+    topLeft.y -= 2;
+    botRight.x += 2;
+    botRight.y += 2;
+    
+    dc.SetPen(*wxBLACK_DASHED_PEN);
+    dc.SetBrush(*wxTRANSPARENT_BRUSH);
+    dc.DrawRectangle(wxRect(topLeft, botRight));
+}
 RectShape::RectShape(const wxPoint& start)
 : Shape(start)
 {
@@ -105,14 +118,15 @@ void PencilShape::Update(const wxPoint &newPoint)
 
 void PencilShape::Finalize()
 {
-    wxPoint topLeft, botRight;
+    wxPoint topLeft = mPoints.front();
+    wxPoint botRight = mPoints.front();
     for(auto& iter : mPoints)
     {
         if(iter.x < topLeft.x)
         {
             topLeft.x = iter.x;
         }
-        if(iter.y > topLeft.y)
+        if(iter.y < topLeft.y)
         {
             topLeft.y = iter.y;
         }
@@ -120,11 +134,13 @@ void PencilShape::Finalize()
         {
             botRight.x = iter.x;
         }
-        if(iter.y < botRight.y)
+        if(iter.y > botRight.y)
         {
             botRight.y = iter.y;
         }
     }
+    mTopLeft = topLeft;
+    mBotRight = botRight;
 }
 
 void PencilShape::Draw(wxDC &dc) const

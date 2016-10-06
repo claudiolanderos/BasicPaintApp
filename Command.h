@@ -61,3 +61,21 @@ public:
     
     void Update(const wxPoint& newPoint) override;
 };
+
+class PenBrushCommand : public Command
+{
+public:
+    PenBrushCommand(const wxPoint& start, std::shared_ptr<Shape> shape);
+    
+    void Finalize(std::shared_ptr<PaintModel> model) override;
+    
+    void Undo(std::shared_ptr<PaintModel> model) override;
+    
+    void Redo(std::shared_ptr<PaintModel> model) override;
+    
+protected:
+    std::shared_ptr<wxPen> mOldPen;
+    std::shared_ptr<wxPen> mNewPen;
+    std::shared_ptr<wxBrush> mOldBrush;
+    std::shared_ptr<wxBrush> mNewBrush;
+};

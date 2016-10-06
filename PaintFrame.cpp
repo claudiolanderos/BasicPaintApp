@@ -244,6 +244,10 @@ void PaintFrame::OnSetPenColor(wxCommandEvent& event)
     {
         // Use dialog.GetColourData() to get the color picked
         mModel->SetPenColor(dialog.GetColourData().GetColour());
+        if(mModel->GetSelectedShape() != nullptr)
+        {
+            mModel->SetPenCommand();
+        }
     }
 }
 
@@ -262,6 +266,10 @@ void PaintFrame::OnSetPenWidth(wxCommandEvent& event)
         if(value > 0 && value < 11)
            {
                mModel->SetPenWidth(value);
+               if(mModel->GetSelectedShape() != nullptr)
+               {
+                   mModel->SetPenCommand();
+               }
            }
     }
 }
@@ -275,6 +283,10 @@ void PaintFrame::OnSetBrushColor(wxCommandEvent& event)
     {
         // Use dialog.GetColourData() to get the color picked
         mModel->SetBrushColor(dialog.GetColourData().GetColour());
+        if(mModel->GetSelectedShape() != nullptr)
+        {
+            mModel->SetBrushCommand();
+        }
     }
 }
 
@@ -299,9 +311,9 @@ void PaintFrame::OnMouseButton(wxMouseEvent& event)
                 mModel->CreateCommand(CM_DrawPencil, event.GetPosition());
                 mPanel->PaintNow();
                 break;
-            case ID_SetPenColor:
-                break;
-            case ID_SetBrushColor:
+            case ID_Selector:
+                mModel->SelectShape(event.GetPosition());
+                mPanel->PaintNow();
                 break;
             default:
                 break;

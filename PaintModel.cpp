@@ -5,7 +5,9 @@
 PaintModel::PaintModel()
 {
     mPen = *wxBLACK_PEN;
+    mOldPen = mPen;
     mBrush = *wxWHITE_BRUSH;
+    mOldBrush = mBrush;
 }
 
 // Draws any shapes in the model to the provided DC (draw context)
@@ -14,6 +16,10 @@ void PaintModel::DrawShapes(wxDC& dc, bool showSelection)
     for(auto& iter : mShapes)
     {
         iter->Draw(dc);
+    }
+    if(mSelectedShape != nullptr)
+    {
+        mSelectedShape->DrawSelection(dc);
     }
 }
 
@@ -31,7 +37,10 @@ void PaintModel::New()
     }
     mShapes.clear();
     mPen = *wxBLACK_PEN;
+    mOldPen = mPen;
     mBrush = *wxWHITE_BRUSH;
+    mOldBrush = mBrush;
+    mSelectedShape.reset();
 }
 
 // Add a shape to the paint model
@@ -81,6 +90,24 @@ void PaintModel::FinalizeCommand()
     mActiveCommand = nullptr;
 }
 
+void PaintModel::SetPenCommand()
+{
+    if(mSelectedShape != nullptr)
+    {
+        CreateCommand(CM_SetPen, wxPoint());
+        FinalizeCommand();
+    }
+}
+
+void PaintModel::SetBrushCommand()
+{
+    if(mSelectedShape != nullptr)
+    {
+        CreateCommand(CM_SetBrush, wxPoint());
+        FinalizeCommand();
+    }
+}
+
 void PaintModel::Undo()
 {
     if(CanUndo())
@@ -100,5 +127,17 @@ void PaintModel::Redo()
         mUndo.push(command);
         command->Redo(shared_from_this());
         mRedo.pop();
+    }
+}
+
+void PaintModel::SelectShape(wxPoint point)
+{
+    for(auto iter = mShapes.rbegin(); iter != mShapes.rend(); iter++)
+    {
+        if((*iter)->Intersects(point))
+        {
+            mSelectedShape = *iter;
+            break;
+        }
     }
 }
