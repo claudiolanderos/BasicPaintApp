@@ -147,6 +147,28 @@ void PaintFrame::SetupToolbar()
 	mToolbar->EnableTool(wxID_REDO, false);
 }
 
+void PaintFrame::UpdateUndoRedoButtons()
+{
+    if(mModel->CanRedo())
+    {
+        mToolbar->EnableTool(wxID_REDO, true);
+        mEditMenu->Enable(wxID_REDO, true);
+    }
+    else {
+        mToolbar->EnableTool(wxID_REDO, false);
+        mEditMenu->Enable(wxID_REDO, false);
+    }
+    
+    if(mModel->CanUndo())
+    {
+        mToolbar->EnableTool(wxID_UNDO, true);
+        mEditMenu->Enable(wxID_UNDO, true);
+    }
+    else {
+        mToolbar->EnableTool(wxID_UNDO, false);
+        mEditMenu->Enable(wxID_UNDO, false);
+    }
+}
 void PaintFrame::SetupModelAndView()
 {
 	// Prepare the draw panel and show this frame
@@ -190,12 +212,16 @@ void PaintFrame::OnImport(wxCommandEvent& event)
 
 void PaintFrame::OnUndo(wxCommandEvent& event)
 {
-	// TODO
+    mModel->Undo();
+    mPanel->PaintNow();
+    UpdateUndoRedoButtons();
 }
 
 void PaintFrame::OnRedo(wxCommandEvent& event)
 {
-	// TODO
+    mModel->Redo();
+    mPanel->PaintNow();
+    UpdateUndoRedoButtons();
 }
 
 void PaintFrame::OnUnselect(wxCommandEvent& event)
@@ -253,6 +279,8 @@ void PaintFrame::OnMouseButton(wxMouseEvent& event)
             mModel->FinalizeCommand();
         }
     }
+    
+    UpdateUndoRedoButtons();
 }
 
 void PaintFrame::OnMouseMove(wxMouseEvent& event)

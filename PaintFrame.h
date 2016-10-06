@@ -53,6 +53,8 @@ private:
 
 	void SetCursor(CursorType type);
 	
+    void UpdateUndoRedoButtons();
+    
 	wxDECLARE_EVENT_TABLE();
 private:
 	CursorCache mCursors;

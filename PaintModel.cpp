@@ -19,7 +19,16 @@ void PaintModel::DrawShapes(wxDC& dc, bool showSelection)
 // Clear the current paint model and start fresh
 void PaintModel::New()
 {
-	// TODO
+    mActiveCommand.reset();
+    while(!mRedo.empty())
+    {
+        mRedo.pop();
+    }
+    while(!mUndo.empty())
+    {
+        mUndo.pop();
+    }
+    mShapes.clear();
 }
 
 // Add a shape to the paint model
@@ -51,6 +60,10 @@ bool PaintModel::HasActiveCommand()
 void PaintModel::CreateCommand(CommandType commandType, const wxPoint& start)
 {
     mActiveCommand = CommandFactory::Create(shared_from_this(), commandType, start);
+    while(!mRedo.empty())
+    {
+        mRedo.pop();
+    }
 }
 
 void PaintModel::UpdateCommand(wxPoint point)
@@ -61,5 +74,28 @@ void PaintModel::UpdateCommand(wxPoint point)
 void PaintModel::FinalizeCommand()
 {
     mActiveCommand->Finalize(shared_from_this());
+    mUndo.push(mActiveCommand);
     mActiveCommand = nullptr;
+}
+
+void PaintModel::Undo()
+{
+    if(CanUndo())
+    {
+        auto command = mUndo.top();
+        mRedo.push(command);
+        command->Undo(shared_from_this());
+        mUndo.pop();
+    }
+}
+
+void PaintModel::Redo()
+{
+    if(CanRedo())
+    {
+        auto command = mRedo.top();
+        mUndo.push(command);
+        command->Redo(shared_from_this());
+        mRedo.pop();
+    }
 }

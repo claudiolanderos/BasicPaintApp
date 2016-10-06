@@ -4,6 +4,7 @@
 #include "Shape.h"
 #include "Command.h"
 #include <wx/bitmap.h>
+#include <stack>
 
 class PaintModel : public std::enable_shared_from_this<PaintModel>
 {
@@ -28,9 +29,22 @@ public:
     void UpdateCommand(wxPoint point);
     
     void FinalizeCommand();
+    
+    bool CanUndo() { return !mUndo.empty(); }
+    
+    bool CanRedo() { return !mRedo.empty(); }
+    // Undo command
+    void Undo();
+    // Redo command
+    void Redo();
+    
 private:
 	// Vector of all the shapes in the model
 	std::vector<std::shared_ptr<Shape>> mShapes;
     //Shared pointer to active commands
     std::shared_ptr<Command> mActiveCommand;
+    // Undo stack
+    std::stack<std::shared_ptr<Command>> mUndo;
+    // Redo stack
+    std::stack<std::shared_ptr<Command>> mRedo;
 };
