@@ -27,7 +27,11 @@ public:
     
     wxBrush GetBrush() { return mBrush; }
     
+    wxRect GetSelectionRectangle() { return mSelectionRectangle; }
+    
     void DrawSelection(wxDC &dc);
+    
+    void SetOffset(wxPoint offset) { mOffset = offset; }
 protected:
 	// Starting point of shape
 	wxPoint mStartPoint;
@@ -41,6 +45,10 @@ protected:
     wxPen mPen;
     // Brush
     wxBrush mBrush;
+    // Rect for selection
+    wxRect mSelectionRectangle;
+    // Offset point
+    wxPoint mOffset;
 };
 
 class RectShape : public Shape

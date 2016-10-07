@@ -68,6 +68,8 @@ public:
     
     void DeleteCommand();
 
+    void MoveCommand(const wxPoint& offset);
+    
 private:
 	// Vector of all the shapes in the model
 	std::vector<std::shared_ptr<Shape>> mShapes;

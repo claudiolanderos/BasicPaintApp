@@ -302,20 +302,28 @@ void PaintFrame::OnMouseButton(wxMouseEvent& event)
 {
 	if (event.LeftDown())
 	{
+        if(mCurrentCursor == CU_Move)
+        {
+            mModel->CreateCommand(CM_Move, event.GetPosition());
+        }
         switch (mCurrentTool) {
             case ID_DrawRect:
+                mModel->UnSelectShape();
                 mModel->CreateCommand(CM_DrawRect, event.GetPosition());
                 mPanel->PaintNow();
                 break;
             case ID_DrawEllipse:
+                mModel->UnSelectShape();
                 mModel->CreateCommand(CM_DrawEllipse, event.GetPosition());
                 mPanel->PaintNow();
                 break;
             case ID_DrawLine:
+                mModel->UnSelectShape();
                 mModel->CreateCommand(CM_DrawLine, event.GetPosition());
                 mPanel->PaintNow();
                 break;
             case ID_DrawPencil:
+                mModel->UnSelectShape();
                 mModel->CreateCommand(CM_DrawPencil, event.GetPosition());
                 mPanel->PaintNow();
                 break;
@@ -343,6 +351,15 @@ void PaintFrame::OnMouseButton(wxMouseEvent& event)
 
 void PaintFrame::OnMouseMove(wxMouseEvent& event)
 {
+    std::shared_ptr<RectShape> selectedShape = std::dynamic_pointer_cast<RectShape >(mModel->GetSelectedShape());
+    if(selectedShape != nullptr && selectedShape->GetSelectionRectangle().Contains(event.GetPosition()))
+    {
+        SetCursor(CU_Move);
+    }
+    else if(selectedShape != nullptr){
+        SetCursor(CU_Default);
+    }
+    
     if(mModel->HasActiveCommand())
     {
         mModel->UpdateCommand(event.GetPosition());
@@ -369,6 +386,7 @@ void PaintFrame::SetCursor(CursorType type)
 	wxCursor* cursor = mCursors.GetCursor(type);
 	if (cursor != nullptr)
 	{
+        mCurrentCursor = type;
 		mPanel->SetCursor(*cursor);
 	}
 }

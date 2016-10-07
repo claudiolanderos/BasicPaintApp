@@ -52,7 +52,8 @@ private:
 	void ToggleTool(EventID toolID);
 
 	void SetCursor(CursorType type);
-	
+    CursorType GetCursor() { return mCurrentCursor; }
+    
     void UpdateUndoRedoButtons();
     
 	wxDECLARE_EVENT_TABLE();
@@ -71,4 +72,5 @@ private:
 	class PaintDrawPanel* mPanel;
 
 	EventID mCurrentTool;
+    CursorType mCurrentCursor;
 };

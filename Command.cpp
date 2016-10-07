@@ -49,6 +49,8 @@ std::shared_ptr<Command> CommandFactory::Create(std::shared_ptr<PaintModel> mode
             break;
             
         case CM_Move:
+            shape = model->GetSelectedShape();
+            retVal = std::make_shared<MoveCommand>(start, shape);
             break;
             
         case CM_Delete:
@@ -161,4 +163,31 @@ void DeleteCommand::Undo(std::shared_ptr<PaintModel> model)
 void DeleteCommand::Redo(std::shared_ptr<PaintModel> model)
 {
     model->RemoveShape(mShape);
+}
+
+MoveCommand::MoveCommand(const wxPoint& start, std::shared_ptr<Shape> shape)
+: Command(start, shape)
+{
+    
+}
+
+void MoveCommand::Update(const wxPoint &newPoint)
+{
+    Command::Update(newPoint);
+    mShape->SetOffset(mEndPoint-mStartPoint);
+}
+
+void MoveCommand::Finalize(std::shared_ptr<PaintModel> model)
+{
+    
+}
+
+void MoveCommand::Undo(std::shared_ptr<PaintModel> model)
+{
+    mShape->SetOffset(wxPoint(0,0));
+}
+
+void MoveCommand::Redo(std::shared_ptr<PaintModel> model)
+{
+    mShape->SetOffset(mEndPoint-mStartPoint);
 }

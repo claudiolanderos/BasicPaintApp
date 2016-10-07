@@ -6,7 +6,8 @@ Shape::Shape(const wxPoint& start)
 	,mTopLeft(start)
 	,mBotRight(start)
 {
-
+    mOffset.x = 0;
+    mOffset.y = 0;
 }
 
 // Tests whether the provided point intersects
@@ -48,14 +49,14 @@ void Shape::Finalize()
 
 void Shape::GetBounds(wxPoint& topLeft, wxPoint& botRight) const
 {
-	topLeft = mTopLeft;
-	botRight = mBotRight;
+	topLeft = mTopLeft + mOffset;
+	botRight = mBotRight + mOffset;
 }
 
 void Shape::DrawSelection(wxDC &dc)
 {
-    wxPoint topLeft = mTopLeft;
-    wxPoint botRight = mBotRight;
+    wxPoint topLeft = mTopLeft + mOffset;
+    wxPoint botRight = mBotRight + mOffset;
     topLeft.x -= 2;
     topLeft.y -= 2;
     botRight.x += 2;
@@ -63,7 +64,8 @@ void Shape::DrawSelection(wxDC &dc)
     
     dc.SetPen(*wxBLACK_DASHED_PEN);
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
-    dc.DrawRectangle(wxRect(topLeft, botRight));
+    mSelectionRectangle = wxRect(topLeft, botRight);
+    dc.DrawRectangle(mSelectionRectangle);
 }
 RectShape::RectShape(const wxPoint& start)
 : Shape(start)
@@ -75,7 +77,7 @@ void RectShape::Draw(wxDC &dc) const
 {
     dc.SetPen(mPen);
     dc.SetBrush(mBrush);
-    dc.DrawRectangle(wxRect(mTopLeft, mBotRight));
+    dc.DrawRectangle(wxRect(mTopLeft + mOffset, mBotRight + mOffset));
 }
 
 EllipseShape::EllipseShape(const wxPoint& start)
@@ -88,7 +90,7 @@ void EllipseShape::Draw(wxDC &dc) const
 {
     dc.SetPen(mPen);
     dc.SetBrush(mBrush);
-    dc.DrawEllipse(wxRect(mTopLeft, mBotRight));
+    dc.DrawEllipse(wxRect(mTopLeft + mOffset, mBotRight + mOffset));
 }
 
 LineShape::LineShape(const wxPoint& start)
@@ -101,7 +103,7 @@ void LineShape::Draw(wxDC &dc) const
 {
     dc.SetPen(mPen);
     dc.SetBrush(mBrush);
-    dc.DrawLine(mStartPoint, mEndPoint);
+    dc.DrawLine(mStartPoint + mOffset, mEndPoint + mOffset);
 }
 
 PencilShape::PencilShape(const wxPoint& point)
@@ -152,7 +154,7 @@ void PencilShape::Draw(wxDC &dc) const
         dc.DrawPoint(mPoints[0]);
     }
     else {
-        dc.DrawLines(static_cast<int>(mPoints.size()), mPoints.data());
+        dc.DrawLines(static_cast<int>(mPoints.size()), mPoints.data(), mOffset.x, mOffset.y);
     }
 }
 
