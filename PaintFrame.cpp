@@ -46,7 +46,8 @@ PaintFrame::PaintFrame(const wxString& title, const wxPoint& pos, const wxSize& 
 	// Initialize image handlers to support BMP, PNG, JPEG
 	wxImage::AddHandler(new wxPNGHandler());
 	wxImage::AddHandler(new wxJPEGHandler());
-
+    wxImage::AddHandler(new wxBMPHandler());
+    
 	SetupMenu();
 	
 	SetupToolbar();
@@ -255,7 +256,41 @@ void PaintFrame::OnExport(wxCommandEvent& event)
 
 void PaintFrame::OnImport(wxCommandEvent& event)
 {
-	// TODO
+    wxFileDialog
+    openFileDialog(this, _(""), "", "",
+                   "JPG files (*.jpg)|*.jpg|PNG files (*.png)|*.png|BMP files (*.bmp)|*.bmp|JPEG files (*.jpeg)|*.jpeg", wxFD_OPEN|wxFD_FILE_MUST_EXIST);
+    if (openFileDialog.ShowModal() == wxID_CANCEL)
+        return;     // the user changed idea...
+    
+    // proceed loading the file chosen by the user;
+    // this can be done with e.g. wxWidgets input streams:
+    wxFileInputStream input_stream(openFileDialog.GetPath());
+    if (!input_stream.IsOk())
+    {
+        wxLogError("Cannot open file '%s'.", openFileDialog.GetPath());
+        return;
+    }
+    
+    std::string ext = GetFileExt(openFileDialog.GetPath().ToStdString());
+    mModel->SetFilename(openFileDialog.GetPath());
+    
+    if(!mModel->GetBitmap().IsOk())
+    {
+        if(ext == "png")
+        {
+            // Write the bitmap with the specified file name and wxBitmapType
+            mModel->LoadBitmap(mModel->GetFilename(), wxBITMAP_TYPE_PNG);
+        }
+        else if(ext == "bmp")
+        {
+            mModel->LoadBitmap(mModel->GetFilename(), wxBITMAP_TYPE_BMP);
+        }
+        else if(ext == "jpeg" || ext == "jpg")
+        {
+            mModel->LoadBitmap(mModel->GetFilename(), wxBITMAP_TYPE_JPEG);
+        }
+    }
+    mPanel->PaintNow();
 }
 
 void PaintFrame::OnUndo(wxCommandEvent& event)

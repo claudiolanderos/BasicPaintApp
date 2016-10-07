@@ -10,9 +10,18 @@ PaintModel::PaintModel()
     mOldBrush = mBrush;
 }
 
+void PaintModel::LoadBitmap(wxString filename, wxBitmapType type)
+{
+    New();
+    mBitmap.LoadFile(filename, type);
+}
 // Draws any shapes in the model to the provided DC (draw context)
 void PaintModel::DrawShapes(wxDC& dc, bool showSelection)
 {
+    if(mBitmap.IsOk())
+    {
+        dc.DrawBitmap(mBitmap, wxPoint(0,0));
+    }
     for(auto& iter : mShapes)
     {
         iter->Draw(dc);
@@ -41,6 +50,7 @@ void PaintModel::New()
     mBrush = *wxWHITE_BRUSH;
     mOldBrush = mBrush;
     mSelectedShape.reset();
+    mBitmap = wxBitmap();
 }
 
 // Add a shape to the paint model

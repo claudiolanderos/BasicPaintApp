@@ -70,6 +70,11 @@ public:
 
     void MoveCommand(const wxPoint& offset);
     
+    void LoadBitmap(wxString filename, wxBitmapType type);
+    
+    void SetBitmap(wxBitmap bitmap) { mBitmap = bitmap;}
+    wxBitmap GetBitmap() { return mBitmap; }
+    
     wxSize GetSize() { return mSize; }
     void SetSize(wxSize size) { mSize = size; }
     
@@ -98,4 +103,6 @@ private:
     wxSize mSize;
     // Name of file
     wxString mFilename;
+    // Bitmap of the model
+    wxBitmap mBitmap;
 };
