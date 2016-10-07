@@ -20,16 +20,12 @@ public:
 	virtual ~Shape() { }
     
     void SetPen(wxPen pen) { mPen = pen; }
-    void SetOldPen(wxPen pen) { mOldPen = pen; }
     
     wxPen GetPen() { return mPen; }
-    wxPen GetOldPen() { return mOldPen; }
     
     void SetBrush(wxBrush brush) { mBrush = brush; }
-    void SetOldBrush(wxBrush brush) { mOldBrush = brush; }
     
     wxBrush GetBrush() { return mBrush; }
-    wxBrush GetOldBrush() { return mOldBrush; }
     
     void DrawSelection(wxDC &dc);
 protected:
@@ -43,10 +39,8 @@ protected:
 	wxPoint mBotRight;
     // Pen
     wxPen mPen;
-    wxPen mOldPen;
     // Brush
     wxBrush mBrush;
-    wxBrush mOldBrush;
 };
 
 class RectShape : public Shape

@@ -63,8 +63,7 @@ public:
     void SetPenCommand();
     
     void SetBrushCommand();
-    
-    friend PenBrushCommand;
+
 private:
 	// Vector of all the shapes in the model
 	std::vector<std::shared_ptr<Shape>> mShapes;

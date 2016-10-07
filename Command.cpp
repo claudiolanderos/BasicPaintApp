@@ -57,8 +57,6 @@ std::shared_ptr<Command> CommandFactory::Create(std::shared_ptr<PaintModel> mode
         case CM_SetPen:
         case CM_SetBrush:
             shape = model->GetSelectedShape();
-            shape->SetOldPen(shape->GetPen());
-            shape->SetOldBrush(shape->GetBrush());
             retVal = std::make_shared<PenBrushCommand>(start, shape);
             std::dynamic_pointer_cast<PenBrushCommand>(retVal)->SetOldPen(shape->GetPen());
             std::dynamic_pointer_cast<PenBrushCommand>(retVal)->SetNewPen(model->GetPen());
