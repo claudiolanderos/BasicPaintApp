@@ -70,6 +70,11 @@ public:
 
     void MoveCommand(const wxPoint& offset);
     
+    wxSize GetSize() { return mSize; }
+    void SetSize(wxSize size) { mSize = size; }
+    
+    wxString GetFilename() { return mFilename; }
+    void SetFilename(wxString filename) { mFilename = filename; }
 private:
 	// Vector of all the shapes in the model
 	std::vector<std::shared_ptr<Shape>> mShapes;
@@ -89,4 +94,8 @@ private:
     std::shared_ptr<Shape> mSelectedShape;
     // Actual selection drawing
     std::shared_ptr<Shape> mSelection;
+    // Size of bitmap
+    wxSize mSize;
+    // Name of file
+    wxString mFilename;
 };

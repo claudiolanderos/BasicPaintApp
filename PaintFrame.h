@@ -58,6 +58,8 @@ private:
     
 	wxDECLARE_EVENT_TABLE();
 private:
+    std::string GetFileExt(const std::string& s);
+    
 	CursorCache mCursors;
 
 	std::shared_ptr<class PaintModel> mModel;

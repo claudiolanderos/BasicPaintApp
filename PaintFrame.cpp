@@ -11,6 +11,8 @@
 #include <wx/textdlg.h>
 #include <wx/filedlg.h>
 #include <wx/valnum.h>
+#include <wx/wfstream.h>
+#include <wx/dcmemory.h>
 #include "PaintDrawPanel.h"
 #include "PaintModel.h"
 
@@ -201,9 +203,54 @@ void PaintFrame::OnNew(wxCommandEvent& event)
 	mPanel->PaintNow();
 }
 
+std::string PaintFrame::GetFileExt(const std::string& s) {
+    
+    //Taken from the C++ Cookbook
+    size_t i = s.rfind('.', s.length());
+    if (i != std::string::npos) {
+        return(s.substr(i+1, s.length() - i));
+    }
+    
+    return("");
+}
+
 void PaintFrame::OnExport(wxCommandEvent& event)
 {
-	// TODO
+    wxFileDialog
+    saveFileDialog(this, _(""), "", "",
+                   "JPG files (*.jpg)|*.jpg|PNG files (*.png)|*.png|BMP files (*.bmp)|*.bmp|JPEG files (*.jpeg)|*.jpeg", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+    if (saveFileDialog.ShowModal() == wxID_CANCEL)
+        return;     // the user changed idea...
+    
+    mModel->SetFilename(saveFileDialog.GetPath());
+    mModel->SetSize(mPanel->GetSize());
+    
+    std::string ext = GetFileExt(saveFileDialog.GetPath().ToStdString());
+    
+    wxBitmap bitmap;
+    // Create the bitmap of the specified wxSize
+    bitmap.Create(mModel->GetSize());
+    // Create a memory DC to draw to the bitmap
+    wxMemoryDC dc(bitmap);
+    // Clear the background color
+    dc.SetBackground(*wxWHITE_BRUSH);
+    dc.Clear();
+    // Draw all the shapes (make sure not the selection!)
+    mModel->UnSelectShape();
+    mModel->DrawShapes(dc);
+    if(ext == "png")
+    {
+        // Write the bitmap with the specified file name and wxBitmapType
+        bitmap.SaveFile(mModel->GetFilename(), wxBITMAP_TYPE_PNG);
+    }
+    else if(ext == "bmp")
+    {
+        bitmap.SaveFile(mModel->GetFilename(), wxBITMAP_TYPE_BMP);
+    }
+    else if(ext == "jpeg" || ext == "jpg")
+    {
+        bitmap.SaveFile(mModel->GetFilename(), wxBITMAP_TYPE_JPEG);
+    }
 }
 
 void PaintFrame::OnImport(wxCommandEvent& event)
