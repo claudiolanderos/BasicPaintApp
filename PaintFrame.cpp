@@ -214,6 +214,7 @@ void PaintFrame::OnImport(wxCommandEvent& event)
 void PaintFrame::OnUndo(wxCommandEvent& event)
 {
     mModel->Undo();
+    mEditMenu->Enable(ID_Unselect, false);
     mPanel->PaintNow();
     UpdateUndoRedoButtons();
 }
@@ -227,7 +228,9 @@ void PaintFrame::OnRedo(wxCommandEvent& event)
 
 void PaintFrame::OnUnselect(wxCommandEvent& event)
 {
-	// TODO
+    mEditMenu->Enable(ID_Unselect, false);
+    mModel->UnSelectShape();
+    mPanel->PaintNow();
 }
 
 void PaintFrame::OnDelete(wxCommandEvent& event)
@@ -249,6 +252,7 @@ void PaintFrame::OnSetPenColor(wxCommandEvent& event)
             mModel->SetPenCommand();
         }
     }
+    mPanel->PaintNow();
 }
 
 void PaintFrame::OnSetPenWidth(wxCommandEvent& event)
@@ -272,6 +276,7 @@ void PaintFrame::OnSetPenWidth(wxCommandEvent& event)
                }
            }
     }
+    mPanel->PaintNow();
 }
 
 void PaintFrame::OnSetBrushColor(wxCommandEvent& event)
@@ -288,6 +293,7 @@ void PaintFrame::OnSetBrushColor(wxCommandEvent& event)
             mModel->SetBrushCommand();
         }
     }
+    mPanel->PaintNow();
 }
 
 void PaintFrame::OnMouseButton(wxMouseEvent& event)
@@ -314,6 +320,7 @@ void PaintFrame::OnMouseButton(wxMouseEvent& event)
             case ID_Selector:
                 mModel->SelectShape(event.GetPosition());
                 mPanel->PaintNow();
+                mEditMenu->Enable(ID_Unselect, true);
                 break;
             default:
                 break;

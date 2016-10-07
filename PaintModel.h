@@ -58,6 +58,8 @@ public:
     
     void SelectShape(wxPoint point);
     
+    void UnSelectShape();
+    
     std::shared_ptr<Shape> GetSelectedShape() { return mSelectedShape; }
     
     void SetPenCommand();
@@ -81,4 +83,6 @@ private:
     wxBrush mOldBrush;
     // Selected shape
     std::shared_ptr<Shape> mSelectedShape;
+    // Actual selection drawing
+    std::shared_ptr<Shape> mSelection;
 };

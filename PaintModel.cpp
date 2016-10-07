@@ -55,6 +55,10 @@ void PaintModel::RemoveShape(std::shared_ptr<Shape> shape)
 	auto iter = std::find(mShapes.begin(), mShapes.end(), shape);
 	if (iter != mShapes.end())
 	{
+        if(mSelectedShape == *iter)
+        {
+            mSelectedShape.reset();
+        }
 		mShapes.erase(iter);
 	}
 }
@@ -140,4 +144,9 @@ void PaintModel::SelectShape(wxPoint point)
             break;
         }
     }
+}
+
+void PaintModel::UnSelectShape()
+{
+    mSelectedShape.reset();
 }
