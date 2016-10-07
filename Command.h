@@ -34,6 +34,11 @@ public:
 	virtual void Undo(std::shared_ptr<PaintModel> model) = 0;
 	// Used to "redo" the command
 	virtual void Redo(std::shared_ptr<PaintModel> model) = 0;
+    
+    std::shared_ptr<Shape> GetShape() { return mShape; }
+    
+    void SetShape(std::shared_ptr<Shape> shape) { mShape = shape; }
+    
 	virtual ~Command() { }
 protected:
 	wxPoint mStartPoint;
@@ -73,9 +78,16 @@ public:
     
     void Redo(std::shared_ptr<PaintModel> model) override;
     
-protected:
-    std::shared_ptr<wxPen> mOldPen;
-    std::shared_ptr<wxPen> mNewPen;
-    std::shared_ptr<wxBrush> mOldBrush;
-    std::shared_ptr<wxBrush> mNewBrush;
+    void SetNewPen(wxPen pen) { mNewPen = pen; }
+    
+    void SetOldPen(wxPen pen) { mOldPen = pen; }
+    
+    void SetNewBrush(wxBrush brush) { mNewBrush = brush; }
+    
+    void SetOldBrush(wxBrush brush) { mOldBrush = brush; }
+private:
+    wxPen mOldPen;
+    wxPen mNewPen;
+    wxBrush mOldBrush;
+    wxBrush mNewBrush;
 };
