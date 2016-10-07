@@ -46,19 +46,20 @@ void PaintModel::New()
 // Add a shape to the paint model
 void PaintModel::AddShape(std::shared_ptr<Shape> shape)
 {
-	mShapes.emplace_back(shape);
+    UnSelectShape();
+    if (std::find(mShapes.begin(), mShapes.end(), shape) == mShapes.end())
+    {
+        mShapes.emplace_back(shape);
+    }
 }
 
 // Remove a shape from the paint model
 void PaintModel::RemoveShape(std::shared_ptr<Shape> shape)
 {
+    UnSelectShape();
 	auto iter = std::find(mShapes.begin(), mShapes.end(), shape);
 	if (iter != mShapes.end())
 	{
-        if(mSelectedShape == *iter)
-        {
-            mSelectedShape.reset();
-        }
 		mShapes.erase(iter);
 	}
 }
@@ -94,6 +95,15 @@ void PaintModel::FinalizeCommand()
     mActiveCommand = nullptr;
 }
 
+void PaintModel::DeleteCommand()
+{
+    if(mSelectedShape != nullptr)
+    {
+        CreateCommand(CM_Delete, wxPoint());
+        FinalizeCommand();
+    }
+}
+
 void PaintModel::SetPenCommand()
 {
     if(mSelectedShape != nullptr)
@@ -117,8 +127,8 @@ void PaintModel::Undo()
     if(CanUndo())
     {
         auto command = mUndo.top();
-        mRedo.push(command);
         command->Undo(shared_from_this());
+        mRedo.push(command);
         mUndo.pop();
     }
 }
@@ -128,8 +138,8 @@ void PaintModel::Redo()
     if(CanRedo())
     {
         auto command = mRedo.top();
-        mUndo.push(command);
         command->Redo(shared_from_this());
+        mUndo.push(command);
         mRedo.pop();
     }
 }

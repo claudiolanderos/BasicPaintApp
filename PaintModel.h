@@ -65,6 +65,8 @@ public:
     void SetPenCommand();
     
     void SetBrushCommand();
+    
+    void DeleteCommand();
 
 private:
 	// Vector of all the shapes in the model

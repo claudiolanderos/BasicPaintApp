@@ -52,6 +52,10 @@ std::shared_ptr<Command> CommandFactory::Create(std::shared_ptr<PaintModel> mode
             break;
             
         case CM_Delete:
+            shape = model->GetSelectedShape();
+            retVal = std::make_shared<DeleteCommand>(start, shape);
+            retVal->SetShape(shape);
+            model->RemoveShape(shape);
             break;
             
         case CM_SetPen:
@@ -135,4 +139,26 @@ void PenBrushCommand::Redo(std::shared_ptr<PaintModel> model)
 void PenBrushCommand::Finalize(std::shared_ptr<PaintModel> model)
 {
     mShape->Finalize();
+}
+
+DeleteCommand::DeleteCommand(const wxPoint& start, std::shared_ptr<Shape> shape)
+: Command(start, shape)
+{
+
+}
+
+
+void DeleteCommand::Finalize(std::shared_ptr<PaintModel> model)
+{
+    mShape->Finalize();
+}
+
+void DeleteCommand::Undo(std::shared_ptr<PaintModel> model)
+{
+    model->AddShape(mShape);
+}
+
+void DeleteCommand::Redo(std::shared_ptr<PaintModel> model)
+{
+    model->RemoveShape(mShape);
 }

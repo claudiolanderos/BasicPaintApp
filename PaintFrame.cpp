@@ -214,7 +214,6 @@ void PaintFrame::OnImport(wxCommandEvent& event)
 void PaintFrame::OnUndo(wxCommandEvent& event)
 {
     mModel->Undo();
-    mEditMenu->Enable(ID_Unselect, false);
     mPanel->PaintNow();
     UpdateUndoRedoButtons();
 }
@@ -235,7 +234,10 @@ void PaintFrame::OnUnselect(wxCommandEvent& event)
 
 void PaintFrame::OnDelete(wxCommandEvent& event)
 {
-	// TODO
+    mModel->DeleteCommand();
+    mEditMenu->Enable(ID_Delete, false);
+    mEditMenu->Enable(ID_Unselect, false);
+    mPanel->PaintNow();
 }
 
 void PaintFrame::OnSetPenColor(wxCommandEvent& event)
@@ -321,6 +323,7 @@ void PaintFrame::OnMouseButton(wxMouseEvent& event)
                 mModel->SelectShape(event.GetPosition());
                 mPanel->PaintNow();
                 mEditMenu->Enable(ID_Unselect, true);
+                mEditMenu->Enable(ID_Delete, true);
                 break;
             default:
                 break;
